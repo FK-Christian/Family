@@ -2,32 +2,31 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
-use App\Couple;
+use App\Models\Family;
+use App\Models\Couple;
 use Ramsey\Uuid\Uuid;
 use Illuminate\Http\Request;
 
-class FamilyActionsController extends Controller
-{
+class FamilyActionsController extends Controller {
+
     /**
      * Set father for a user.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\User  $user
+     * @param  \App\Family  $user
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function setFather(Request $request, User $user)
-    {
+    public function setFather(Request $request, Family $user) {
         $request->validate([
             'set_father_id' => 'nullable',
-            'set_father'    => 'required_without:set_father_id|max:255',
+            'set_father' => 'required_without:set_father_id|max:255',
         ]);
 
         if ($request->get('set_father_id')) {
             $user->father_id = $request->get('set_father_id');
             $user->save();
         } else {
-            $father = new User;
+            $father = new Family;
             $father->id = Uuid::uuid4()->toString();
             $father->name = $request->get('set_father');
             $father->nickname = $request->get('set_father');
@@ -44,21 +43,20 @@ class FamilyActionsController extends Controller
      * Set mother for a user.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\User  $user
+     * @param  \App\Family  $user
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function setMother(Request $request, User $user)
-    {
+    public function setMother(Request $request, Family $user) {
         $request->validate([
             'set_mother_id' => 'nullable',
-            'set_mother'    => 'required_without:set_mother_id|max:255',
+            'set_mother' => 'required_without:set_mother_id|max:255',
         ]);
 
         if ($request->get('set_mother_id')) {
             $user->mother_id = $request->get('set_mother_id');
             $user->save();
         } else {
-            $mother = new User;
+            $mother = new Family;
             $mother->id = Uuid::uuid4()->toString();
             $mother->name = $request->get('set_mother');
             $mother->nickname = $request->get('set_mother');
@@ -75,19 +73,18 @@ class FamilyActionsController extends Controller
      * Add child for a user.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\User  $user
+     * @param  \App\Family  $user
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function addChild(Request $request, User $user)
-    {
+    public function addChild(Request $request, Family $user) {
         $request->validate([
-            'add_child_name'        => 'required|string|max:255',
-            'add_child_gender_id'   => 'required|in:1,2',
-            'add_child_parent_id'   => 'nullable|exists:couples,id',
+            'add_child_name' => 'required|string|max:255',
+            'add_child_gender_id' => 'required|in:1,2',
+            'add_child_parent_id' => 'nullable|exists:couples,id',
             'add_child_birth_order' => 'nullable|numeric',
         ]);
 
-        $child = new User;
+        $child = new Family;
         $child->id = Uuid::uuid4()->toString();
         $child->name = $request->get('add_child_name');
         $child->nickname = $request->get('add_child_name');
@@ -110,7 +107,6 @@ class FamilyActionsController extends Controller
             } else {
                 $child->setMother($user);
             }
-
         }
 
         \DB::commit();
@@ -122,21 +118,20 @@ class FamilyActionsController extends Controller
      * Add wife for male user.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\User  $user
+     * @param  \App\Family  $user
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function addWife(Request $request, User $user)
-    {
+    public function addWife(Request $request, Family $user) {
         $request->validate([
-            'set_wife_id'   => 'nullable',
-            'set_wife'      => 'required_without:set_wife_id|max:255',
+            'set_wife_id' => 'nullable',
+            'set_wife' => 'required_without:set_wife_id|max:255',
             'marriage_date' => 'nullable|date|date_format:Y-m-d',
         ]);
 
         if ($request->get('set_wife_id')) {
-            $wife = User::findOrFail($request->get('set_wife_id'));
+            $wife = Family::findOrFail($request->get('set_wife_id'));
         } else {
-            $wife = new User;
+            $wife = new Family;
             $wife->id = Uuid::uuid4()->toString();
             $wife->name = $request->get('set_wife');
             $wife->nickname = $request->get('set_wife');
@@ -153,21 +148,20 @@ class FamilyActionsController extends Controller
      * Add husband for female user.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\User  $user
+     * @param  \App\Family  $user
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function addHusband(Request $request, User $user)
-    {
+    public function addHusband(Request $request, Family $user) {
         $this->validate($request, [
             'set_husband_id' => 'nullable',
-            'set_husband'    => 'required_without:set_husband_id|max:255',
-            'marriage_date'  => 'nullable|date|date_format:Y-m-d',
+            'set_husband' => 'required_without:set_husband_id|max:255',
+            'marriage_date' => 'nullable|date|date_format:Y-m-d',
         ]);
 
         if ($request->get('set_husband_id')) {
-            $husband = User::findOrFail($request->get('set_husband_id'));
+            $husband = Family::findOrFail($request->get('set_husband_id'));
         } else {
-            $husband = new User;
+            $husband = new Family;
             $husband->id = Uuid::uuid4()->toString();
             $husband->name = $request->get('set_husband');
             $husband->nickname = $request->get('set_husband');
@@ -184,14 +178,14 @@ class FamilyActionsController extends Controller
      * Set parent for a user.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\User  $user
+     * @param  \App\Family  $user
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function setParent(Request $request, User $user)
-    {
+    public function setParent(Request $request, Family $user) {
         $user->parent_id = $request->get('set_parent_id');
         $user->save();
 
         return redirect()->route('users.show', $user);
     }
+
 }

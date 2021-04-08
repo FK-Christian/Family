@@ -3,7 +3,7 @@
 namespace Tests\Feature;
 
 use App\Couple;
-use App\User;
+use App\Family;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -15,7 +15,7 @@ class UsersDeletionTest extends TestCase
     public function manager_can_delete_a_user()
     {
         $manager = $this->loginAsUser();
-        $user = factory(User::class)->create(['manager_id' => $manager->id]);
+        $user = factory(Family::class)->create(['manager_id' => $manager->id]);
 
         $this->visit(route('users.edit', $user));
         $this->seeElement('a', ['id' => 'del-user-'.$user->id]);
@@ -35,11 +35,11 @@ class UsersDeletionTest extends TestCase
     public function manager_can_delete_a_user_the_replace_childs_father_id()
     {
         $manager = $this->loginAsUser();
-        $oldUser = factory(User::class)->states('male')->create([
+        $oldUser = factory(Family::class)->states('male')->create([
             'manager_id' => $manager->id,
         ]);
-        $oldUserChild = factory(User::class)->create(['father_id' => $oldUser->id]);
-        $replacementUser = factory(User::class)->states('male')->create([
+        $oldUserChild = factory(Family::class)->create(['father_id' => $oldUser->id]);
+        $replacementUser = factory(Family::class)->states('male')->create([
             'manager_id' => $manager->id,
         ]);
 
@@ -68,11 +68,11 @@ class UsersDeletionTest extends TestCase
     public function manager_can_delete_a_user_the_replace_childs_mother_id()
     {
         $manager = $this->loginAsUser();
-        $oldUser = factory(User::class)->states('female')->create([
+        $oldUser = factory(Family::class)->states('female')->create([
             'manager_id' => $manager->id,
         ]);
-        $oldUserChild = factory(User::class)->create(['mother_id' => $oldUser->id]);
-        $replacementUser = factory(User::class)->states('female')->create([
+        $oldUserChild = factory(Family::class)->create(['mother_id' => $oldUser->id]);
+        $replacementUser = factory(Family::class)->states('female')->create([
             'manager_id' => $manager->id,
         ]);
 
@@ -101,11 +101,11 @@ class UsersDeletionTest extends TestCase
     public function manager_can_delete_a_user_the_replace_users_manager_id()
     {
         $manager = $this->loginAsUser();
-        $oldUser = factory(User::class)->states('male')->create([
+        $oldUser = factory(Family::class)->states('male')->create([
             'manager_id' => $manager->id,
         ]);
-        $oldUserManagedUser = factory(User::class)->create(['manager_id' => $oldUser->id]);
-        $replacementUser = factory(User::class)->states('male')->create([
+        $oldUserManagedUser = factory(Family::class)->create(['manager_id' => $oldUser->id]);
+        $replacementUser = factory(Family::class)->states('male')->create([
             'manager_id' => $manager->id,
         ]);
 
@@ -134,13 +134,13 @@ class UsersDeletionTest extends TestCase
     public function manager_can_delete_a_user_the_replace_couples_husband_id()
     {
         $manager = $this->loginAsUser();
-        $oldUser = factory(User::class)->states('male')->create([
+        $oldUser = factory(Family::class)->states('male')->create([
             'manager_id' => $manager->id,
         ]);
         $oldUserCouple = factory(Couple::class)->create([
             'husband_id' => $oldUser->id,
         ]);
-        $replacementUser = factory(User::class)->states('male')->create([
+        $replacementUser = factory(Family::class)->states('male')->create([
             'manager_id' => $manager->id,
         ]);
 
@@ -169,13 +169,13 @@ class UsersDeletionTest extends TestCase
     public function manager_can_delete_a_user_the_replace_couples_wife_id()
     {
         $manager = $this->loginAsUser();
-        $oldUser = factory(User::class)->states('female')->create([
+        $oldUser = factory(Family::class)->states('female')->create([
             'manager_id' => $manager->id,
         ]);
         $oldUserCouple = factory(Couple::class)->create([
             'wife_id' => $oldUser->id,
         ]);
-        $replacementUser = factory(User::class)->states('female')->create([
+        $replacementUser = factory(Family::class)->states('female')->create([
             'manager_id' => $manager->id,
         ]);
 
@@ -204,13 +204,13 @@ class UsersDeletionTest extends TestCase
     public function manager_can_delete_a_user_the_replace_couples_manager_id()
     {
         $manager = $this->loginAsUser();
-        $oldUser = factory(User::class)->states('male')->create([
+        $oldUser = factory(Family::class)->states('male')->create([
             'manager_id' => $manager->id,
         ]);
         $oldCoupleManagedCouple = factory(Couple::class)->create([
             'manager_id' => $oldUser->id,
         ]);
-        $replacementUser = factory(User::class)->states('male')->create([
+        $replacementUser = factory(Family::class)->states('male')->create([
             'manager_id' => $manager->id,
         ]);
 
@@ -239,13 +239,13 @@ class UsersDeletionTest extends TestCase
     public function user_replacement_options_only_available_on_same_gender()
     {
         $manager = $this->loginAsUser();
-        $maleUser = factory(User::class)->states('male')->create([
+        $maleUser = factory(Family::class)->states('male')->create([
             'manager_id' => $manager->id,
         ]);
-        $maleUserChild = factory(User::class)->create(['father_id' => $maleUser->id]);
+        $maleUserChild = factory(Family::class)->create(['father_id' => $maleUser->id]);
 
-        $replacementMaleUser = factory(User::class)->states('male')->create();
-        $femaleUser = factory(User::class)->states('female')->create();
+        $replacementMaleUser = factory(Family::class)->states('male')->create();
+        $femaleUser = factory(Family::class)->states('female')->create();
 
         $this->visit(route('users.edit', [$maleUser, 'action' => 'delete']));
 
@@ -258,9 +258,9 @@ class UsersDeletionTest extends TestCase
     public function bugfix_handle_duplicated_couple_on_user_deletion()
     {
         $manager = $this->loginAsUser();
-        $singleWife = factory(User::class)->states('female')->create(['manager_id' => $manager->id]);
-        $oldUser = factory(User::class)->states('male')->create(['manager_id' => $manager->id]);
-        $replacementUser = factory(User::class)->states('male')->create(['manager_id' => $manager->id]);
+        $singleWife = factory(Family::class)->states('female')->create(['manager_id' => $manager->id]);
+        $oldUser = factory(Family::class)->states('male')->create(['manager_id' => $manager->id]);
+        $replacementUser = factory(Family::class)->states('male')->create(['manager_id' => $manager->id]);
         $oldUserCouple = factory(Couple::class)->create([
             'husband_id' => $oldUser->id,
             'wife_id'    => $singleWife->id,
@@ -292,10 +292,10 @@ class UsersDeletionTest extends TestCase
     public function bugfix_handle_duplicated_couple_on_user_deletion_with_different_marriages()
     {
         $manager = $this->loginAsUser();
-        $oldUserWife = factory(User::class)->states('female')->create(['manager_id' => $manager->id]);
-        $replacementUserWife = factory(User::class)->states('female')->create(['manager_id' => $manager->id]);
-        $oldUser = factory(User::class)->states('male')->create(['manager_id' => $manager->id]);
-        $replacementUser = factory(User::class)->states('male')->create(['manager_id' => $manager->id]);
+        $oldUserWife = factory(Family::class)->states('female')->create(['manager_id' => $manager->id]);
+        $replacementUserWife = factory(Family::class)->states('female')->create(['manager_id' => $manager->id]);
+        $oldUser = factory(Family::class)->states('male')->create(['manager_id' => $manager->id]);
+        $replacementUser = factory(Family::class)->states('male')->create(['manager_id' => $manager->id]);
         $oldUserCouple = factory(Couple::class)->create([
             'husband_id' => $oldUser->id,
             'wife_id'    => $oldUserWife->id,

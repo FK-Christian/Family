@@ -1,7 +1,7 @@
 <?php
 
 use App\Couple;
-use App\User;
+use App\Family;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,7 +15,7 @@ use App\User;
 */
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
-$factory->define(User::class, function (Faker\Generator $faker) {
+$factory->define(Family::class, function (Faker\Generator $faker) {
     $name = $faker->name;
     return [
         'id' => $faker->uuid,
@@ -26,11 +26,11 @@ $factory->define(User::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->state(User::class, 'male', function (Faker\Generator $faker) {
+$factory->state(Family::class, 'male', function (Faker\Generator $faker) {
     return ['gender_id' => 1];
 });
 
-$factory->state(User::class, 'female', function (Faker\Generator $faker) {
+$factory->state(Family::class, 'female', function (Faker\Generator $faker) {
     return ['gender_id' => 2];
 });
 
@@ -38,13 +38,13 @@ $factory->define(Couple::class, function (Faker\Generator $faker) {
     return [
         'id' => $faker->uuid,
         'husband_id' => function () {
-            return factory(User::class)->states('male')->create()->id;
+            return factory(Family::class)->states('male')->create()->id;
         },
         'wife_id' => function () {
-            return factory(User::class)->states('female')->create()->id;
+            return factory(Family::class)->states('female')->create()->id;
         },
         'manager_id' => function () {
-            return factory(User::class)->create()->id;
+            return factory(Family::class)->create()->id;
         },
     ];
 });

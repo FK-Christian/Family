@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Helpers;
 
-use App\User;
+use App\Family;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -38,7 +38,7 @@ class UserPhotoHelperTest extends TestCase
     /** @test */
     public function user_photo_function_returns_default_image_photo_element_if_no_agency_image_path_setting()
     {
-        $user = factory(User::class)->create(['gender_id' => 1]);
+        $user = factory(Family::class)->create(['gender_id' => 1]);
 
         $photoFile = 'images/icon_user_1.png';
 
@@ -61,7 +61,7 @@ class UserPhotoHelperTest extends TestCase
 
         $this->assertFileExists(storage_path('app/public/images/user_photo_path.jpg'));
 
-        $user = factory(User::class)->create([
+        $user = factory(Family::class)->create([
             'gender_id'  => 2,
             'photo_path' => $photoPath,
         ]);
@@ -80,7 +80,7 @@ class UserPhotoHelperTest extends TestCase
     /** @test */
     public function user_photo_function_has_overrideable_attributes()
     {
-        $user = factory(User::class)->create([
+        $user = factory(Family::class)->create([
             'gender_id' => 1,
         ]);
 
@@ -102,7 +102,7 @@ class UserPhotoHelperTest extends TestCase
     /** @test */
     public function user_photo_function_returns_default_gender_logo_image_if_user_photo_file_doesnt_exists()
     {
-        $user = factory(User::class)->create([
+        $user = factory(Family::class)->create([
             'gender_id'  => 2,
             'photo_path' => 'images/non_exists_photo_path.jpg',
         ]);

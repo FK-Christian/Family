@@ -3,7 +3,7 @@
 namespace Tests\Unit;
 
 use App\Couple;
-use App\User;
+use App\Family;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Collection;
@@ -16,15 +16,15 @@ class UserTest extends TestCase
     /** @test */
     public function user_have_profile_link()
     {
-        $user = factory(User::class)->create();
+        $user = factory(Family::class)->create();
         $this->assertEquals(link_to_route('users.show', $user->nickname, [$user->id]), $user->profileLink());
     }
 
     /** @test */
     public function user_can_have_many_couples()
     {
-        $husband = factory(User::class)->states('male')->create();
-        $wife = factory(User::class)->states('female')->create();
+        $husband = factory(Family::class)->states('male')->create();
+        $wife = factory(Family::class)->states('female')->create();
         $husband->addWife($wife);
 
         $husband = $husband->fresh();
@@ -36,8 +36,8 @@ class UserTest extends TestCase
     /** @test */
     public function user_can_have_many_marriages()
     {
-        $husband = factory(User::class)->states('male')->create();
-        $wife = factory(User::class)->states('female')->create();
+        $husband = factory(Family::class)->states('male')->create();
+        $wife = factory(Family::class)->states('female')->create();
         $husband->addWife($wife);
 
         $husband = $husband->fresh();
@@ -50,9 +50,9 @@ class UserTest extends TestCase
     /** @test */
     public function male_person_marriages_ordered_by_marriage_date()
     {
-        $husband = factory(User::class)->states('male')->create();
-        $wife1 = factory(User::class)->states('female')->create();
-        $wife2 = factory(User::class)->states('female')->create();
+        $husband = factory(Family::class)->states('male')->create();
+        $wife1 = factory(Family::class)->states('female')->create();
+        $wife2 = factory(Family::class)->states('female')->create();
         $husband->addWife($wife2, '1999-04-21');
         $husband->addWife($wife1, '1990-02-13');
 
@@ -71,9 +71,9 @@ class UserTest extends TestCase
     /** @test */
     public function female_person_marriages_ordered_by_marriage_date()
     {
-        $wife = factory(User::class)->states('female')->create();
-        $husband1 = factory(User::class)->states('male')->create();
-        $husband2 = factory(User::class)->states('male')->create();
+        $wife = factory(Family::class)->states('female')->create();
+        $husband1 = factory(Family::class)->states('male')->create();
+        $husband2 = factory(Family::class)->states('male')->create();
         $wife->addHusband($husband2, '1989-04-21');
         $wife->addHusband($husband1, '1980-02-13');
 
@@ -92,8 +92,8 @@ class UserTest extends TestCase
     /** @test */
     public function user_can_ony_marry_same_person_once()
     {
-        $husband = factory(User::class)->states('male')->create();
-        $wife = factory(User::class)->states('female')->create();
+        $husband = factory(Family::class)->states('male')->create();
+        $wife = factory(Family::class)->states('female')->create();
 
         $husband->addWife($wife);
 
@@ -103,8 +103,8 @@ class UserTest extends TestCase
     /** @test */
     public function user_have_father_link_method()
     {
-        $father = factory(User::class)->create();
-        $user = factory(User::class)->create(['father_id' => $father->id]);
+        $father = factory(Family::class)->create();
+        $user = factory(Family::class)->create(['father_id' => $father->id]);
 
         $this->assertEquals($father->profileLink(), $user->fatherLink());
     }
@@ -112,8 +112,8 @@ class UserTest extends TestCase
     /** @test */
     public function user_have_mother_link_method()
     {
-        $mother = factory(User::class)->create();
-        $user = factory(User::class)->create(['mother_id' => $mother->id]);
+        $mother = factory(Family::class)->create();
+        $user = factory(Family::class)->create(['mother_id' => $mother->id]);
 
         $this->assertEquals($mother->profileLink(), $user->motherLink());
     }
@@ -121,26 +121,26 @@ class UserTest extends TestCase
     /** @test */
     public function a_user_have_a_manager()
     {
-        $manager = factory(User::class)->create();
-        $user = factory(User::class)->create(['manager_id' => $manager->id]);
+        $manager = factory(Family::class)->create();
+        $user = factory(Family::class)->create(['manager_id' => $manager->id]);
 
-        $this->assertTrue($user->manager instanceof User);
+        $this->assertTrue($user->manager instanceof Family);
     }
 
     /** @test */
     public function a_user_has_many_managed_users_relation()
     {
-        $user = factory(User::class)->create();
-        $managedUser = factory(User::class)->create(['manager_id' => $user->id]);
+        $user = factory(Family::class)->create();
+        $managedUser = factory(Family::class)->create(['manager_id' => $user->id]);
 
         $this->assertInstanceOf(Collection::class, $user->managedUsers);
-        $this->assertInstanceOf(User::class, $user->managedUsers->first());
+        $this->assertInstanceOf(Family::class, $user->managedUsers->first());
     }
 
     /** @test */
     public function a_user_has_many_managed_couples_relation()
     {
-        $user = factory(User::class)->create();
+        $user = factory(Family::class)->create();
         $managedCouple = factory(Couple::class)->create(['manager_id' => $user->id]);
 
         $this->assertInstanceOf(Collection::class, $user->managedCouples);
@@ -154,7 +154,7 @@ class UserTest extends TestCase
     public function user_has_age_attribute($today, $dob, $yob, $dod, $yod, $age)
     {
         Carbon::setTestNow($today);
-        $user = factory(User::class)->make([
+        $user = factory(Family::class)->make([
             'dob' => $dob, 'yob' => $yob, 'dod' => $dod, 'yod' => $yod,
         ]);
 
@@ -187,7 +187,7 @@ class UserTest extends TestCase
     public function user_has_age_detail_attribute($today, $dob, $yob, $dod, $yod, $age)
     {
         Carbon::setTestNow($today);
-        $user = factory(User::class)->make([
+        $user = factory(Family::class)->make([
             'dob' => $dob, 'yob' => $yob, 'dod' => $dod, 'yod' => $yod,
         ]);
 
@@ -218,7 +218,7 @@ class UserTest extends TestCase
     {
         $today = '2018-02-02';
         Carbon::setTestNow($today);
-        $user = factory(User::class)->make(['dob' => '1997-01-01']);
+        $user = factory(Family::class)->make(['dob' => '1997-01-01']);
 
         $ageString = '<div title="21 tahun, 1 bulan, 1 hari">21 tahun</div>';
         $this->assertEquals($ageString, $user->age_string);
@@ -231,7 +231,7 @@ class UserTest extends TestCase
     {
         $dateOfBirth = '1990-01-01';
 
-        $customer = factory(User::class)->create(['dob' => $dateOfBirth]);
+        $customer = factory(Family::class)->create(['dob' => $dateOfBirth]);
 
         $birthdayDate = date('Y').substr($dateOfBirth, 4);
         $birthdayDateClass = Carbon::parse($birthdayDate);
@@ -250,7 +250,7 @@ class UserTest extends TestCase
     {
         $dateOfBirth = '1990-01-01';
 
-        $customer = factory(User::class)->create(['dob' => $dateOfBirth]);
+        $customer = factory(Family::class)->create(['dob' => $dateOfBirth]);
 
         $birthdayDate = date('Y').substr($dateOfBirth, 4);
         $birthdayDateClass = Carbon::parse($birthdayDate);

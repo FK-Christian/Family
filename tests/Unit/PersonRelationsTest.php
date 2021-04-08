@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\User;
+use App\Family;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -13,7 +13,7 @@ class PersonRelationsTest extends TestCase
     /** @test */
     public function create_user_model_with_factory()
     {
-        $person = factory(User::class)->create();
+        $person = factory(Family::class)->create();
 
         $this->seeInDatabase('users', [
             'nickname' => $person->nickname,
@@ -24,8 +24,8 @@ class PersonRelationsTest extends TestCase
     /** @test */
     public function person_can_have_a_father()
     {
-        $person = factory(User::class)->create();
-        $father = factory(User::class)->states('male')->create();
+        $person = factory(Family::class)->create();
+        $father = factory(Family::class)->states('male')->create();
         $person->setFather($father);
 
         $this->seeInDatabase('users', [
@@ -39,8 +39,8 @@ class PersonRelationsTest extends TestCase
     /** @test */
     public function person_can_have_a_mother()
     {
-        $person = factory(User::class)->create();
-        $mother = factory(User::class)->states('female')->create();
+        $person = factory(Family::class)->create();
+        $mother = factory(Family::class)->states('female')->create();
         $person->setMother($mother);
 
         $this->seeInDatabase('users', [
@@ -54,10 +54,10 @@ class PersonRelationsTest extends TestCase
     /** @test */
     public function person_can_many_childs()
     {
-        $mother = factory(User::class)->states('female')->create();
-        $person = factory(User::class)->create();
+        $mother = factory(Family::class)->states('female')->create();
+        $person = factory(Family::class)->create();
         $person->setMother($mother);
-        $person = factory(User::class)->create();
+        $person = factory(Family::class)->create();
         $person->setMother($mother);
 
         $this->assertCount(2, $mother->childs);

@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\User;
+use App\Family;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -86,7 +86,7 @@ class ManageUserFamiliesTest extends TestCase
     public function user_can_add_childrens_with_parent_id_if_exist()
     {
         $husband = $this->loginAsUser(['gender_id' => 1]);
-        $wife = factory(User::class)->states('female')->create(['manager_id' => $husband->id]);
+        $wife = factory(Family::class)->states('female')->create(['manager_id' => $husband->id]);
         $husband->addWife($wife);
 
         $marriageId = $husband->fresh()->wifes->first()->pivot->id;
@@ -159,7 +159,7 @@ class ManageUserFamiliesTest extends TestCase
             'gender_id' => 2,
         ]);
 
-        $wife = User::where([
+        $wife = Family::where([
             'nickname'  => 'Nama Istri',
             'gender_id' => 2,
         ])->first();
@@ -192,7 +192,7 @@ class ManageUserFamiliesTest extends TestCase
             'manager_id' => $user->id,
         ]);
 
-        $husband = User::where([
+        $husband = Family::where([
             'nickname'  => 'Nama Suami',
             'gender_id' => 1,
         ])->first();
@@ -209,7 +209,7 @@ class ManageUserFamiliesTest extends TestCase
     public function user_can_pick_father_from_existing_user()
     {
         $user = $this->loginAsUser();
-        $father = factory(User::class)->states('male')->create();
+        $father = factory(Family::class)->states('male')->create();
 
         $this->visit(route('profile'));
         $this->seePageIs(route('profile'));
@@ -231,7 +231,7 @@ class ManageUserFamiliesTest extends TestCase
     public function user_can_pick_mother_from_existing_user()
     {
         $user = $this->loginAsUser();
-        $mother = factory(User::class)->states('female')->create();
+        $mother = factory(Family::class)->states('female')->create();
 
         $this->visit(route('profile'));
         $this->seePageIs(route('profile'));
@@ -253,7 +253,7 @@ class ManageUserFamiliesTest extends TestCase
     public function user_can_pick_wife_from_existing_user()
     {
         $user = $this->loginAsUser(['gender_id' => 1]);
-        $wife = factory(User::class)->states('female')->create();
+        $wife = factory(Family::class)->states('female')->create();
 
         $this->visit(route('profile'));
         $this->seePageIs(route('profile'));
@@ -279,7 +279,7 @@ class ManageUserFamiliesTest extends TestCase
     public function user_can_pick_husband_from_existing_user()
     {
         $user = $this->loginAsUser(['gender_id' => 2]);
-        $husband = factory(User::class)->states('male')->create();
+        $husband = factory(Family::class)->states('male')->create();
 
         $this->visit(route('profile'));
         $this->seePageIs(route('profile'));
@@ -305,8 +305,8 @@ class ManageUserFamiliesTest extends TestCase
     public function user_can_set_parent_from_existing_couple_id()
     {
         $user = $this->loginAsUser();
-        $husband = factory(User::class)->states('male')->create();
-        $wife = factory(User::class)->states('female')->create();
+        $husband = factory(Family::class)->states('male')->create();
+        $wife = factory(Family::class)->states('female')->create();
         $husband->addWife($wife);
 
         $marriageId = $husband->fresh()->wifes->first()->pivot->id;

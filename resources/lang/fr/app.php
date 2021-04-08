@@ -1,0 +1,43 @@
+<?php
+
+return [
+    // Labels
+    'my_profile'        => 'Mon profil',
+    'search'            => 'Rechercher',
+    'unknown'           => 'Inconnu',
+    'male'              => 'Homme',
+    'female'            => 'Femme',
+    'male_code'         => 'M',
+    'female_code'       => 'F',
+    'family_chart'      => 'Famille en graphe',
+    'family_tree'       => 'Famille en Arbre',
+    'child_count'       => 'Nombre enfant',
+    'grand_child_count' => 'nombre grand enfant',
+    'user_found'        => '<strong>:total</strong> trouve avec le mot cle : <strong>:keyword</strong>',
+    'search_your_family' => 'Recherche ta famille',
+    'search_your_family_placeholder' => 'Entrez nom/nickname... click et recherche',
+    'example'           => 'Ex.',
+    'address'           => 'Addres',
+    'contact'           => 'Contact',
+    'city'              => 'Ville',
+    'phone'             => 'Telephone',
+    'login_account'     => 'Compte',
+    'childs_were_not_recorded' => 'Les enfants n\'ont pas été enregistrés.',
+
+    // Actions
+    'edit'              => 'Modifier',
+    'update'            => 'Mettre a jour',
+    'show_profile'      => 'Profil',
+    'manage_family'     => 'Gestion de Famille',
+    'show_family_chart' => 'Famille en graphe',
+    'show_family_tree'  => 'Famille en arbre',
+    'show_marriages'    => 'Les mariages',
+    'enter_new_name'    => 'Entrez le nouveau nom',
+    'select_from_existing_males'   => 'selectionnez depuis la liste des hommes',
+    'select_from_existing_females' => 'selectionnez depuis la liste des femmes',
+    'select_from_existing_couples' => 'selectionnez depuis la liste des couples',
+    'restore'           => 'Restorer',
+    'download'          => 'Telecharger',
+    'delete'            => 'Supprimer',
+    'cancel'            => 'Annuler',
+];

@@ -2,7 +2,7 @@
 
 namespace Tests;
 
-use App\User;
+use App\Family;
 use Laravel\BrowserKitTesting\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
@@ -19,7 +19,7 @@ abstract class TestCase extends BaseTestCase
             'manager_id' => $userId,
         ], $overrides);
 
-        $user = factory(User::class)->create($overrides);
+        $user = factory(Family::class)->create($overrides);
         $this->actingAs($user);
 
         return $user;

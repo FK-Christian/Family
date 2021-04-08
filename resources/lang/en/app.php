@@ -28,6 +28,7 @@ return [
     'edit'              => 'Edit',
     'update'            => 'Update',
     'show_profile'      => 'Show Profile',
+    'manage_family'     => 'Manage Family',
     'show_family_chart' => 'Show Family Chart',
     'show_family_tree'  => 'Show Family Tree',
     'show_marriages'    => 'Show Marriages',

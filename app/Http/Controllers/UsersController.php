@@ -2,32 +2,31 @@
 
 namespace App\Http\Controllers;
 
-use App\Couple;
+use App\Models\Couple;
 use App\Http\Requests\Users\UpdateRequest;
 use App\Jobs\Users\DeleteAndReplaceUser;
-use App\User;
+use App\Models\Family;
 use Illuminate\Http\Request;
 use Storage;
 
-class UsersController extends Controller
-{
+class UsersController extends Controller {
+
     /**
      * Search user by keyword.
      *
      * @return \Illuminate\View\View
      */
-    public function search(Request $request)
-    {
+    public function search(Request $request) {
         $q = $request->get('q');
         $users = [];
 
         if ($q) {
-            $users = User::with('father', 'mother')->where(function ($query) use ($q) {
-                $query->where('name', 'like', '%'.$q.'%');
-                $query->orWhere('nickname', 'like', '%'.$q.'%');
-            })
-                ->orderBy('name', 'asc')
-                ->paginate(24);
+            $users = Family::with('father', 'mother')->where(function ($query) use ($q) {
+                        $query->where('name', 'like', '%' . $q . '%');
+                        $query->orWhere('nickname', 'like', '%' . $q . '%');
+                    })
+                    ->orderBy('name', 'asc')
+                    ->paginate(24);
         }
 
         return view('users.search', compact('users'));
@@ -36,33 +35,31 @@ class UsersController extends Controller
     /**
      * Display the specified User.
      *
-     * @param  \App\User  $user
+     * @param  \App\Family  $user
      * @return \Illuminate\View\View
      */
-    public function show(User $user)
-    {
+    public function show(Family $user) {
         $usersMariageList = $this->getUserMariageList($user);
         $allMariageList = $this->getAllMariageList();
         $malePersonList = $this->getPersonList(1);
         $femalePersonList = $this->getPersonList(2);
 
         return view('users.show', [
-            'user'             => $user,
+            'user' => $user,
             'usersMariageList' => $usersMariageList,
-            'malePersonList'   => $malePersonList,
+            'malePersonList' => $malePersonList,
             'femalePersonList' => $femalePersonList,
-            'allMariageList'   => $allMariageList,
+            'allMariageList' => $allMariageList,
         ]);
     }
 
     /**
      * Display the user's family chart.
      *
-     * @param  \App\User  $user
+     * @param  \App\Family  $user
      * @return \Illuminate\View\View
      */
-    public function chart(User $user)
-    {
+    public function chart(Family $user) {
         $father = $user->father_id ? $user->father : null;
         $mother = $user->mother_id ? $user->mother : null;
 
@@ -79,31 +76,29 @@ class UsersController extends Controller
         $siblings = $user->siblings();
 
         return view('users.chart', compact(
-            'user', 'childs', 'father', 'mother', 'fatherGrandpa',
-            'fatherGrandma', 'motherGrandpa', 'motherGrandma',
-            'siblings', 'colspan'
+                        'user', 'childs', 'father', 'mother', 'fatherGrandpa',
+                        'fatherGrandma', 'motherGrandpa', 'motherGrandma',
+                        'siblings', 'colspan'
         ));
     }
 
     /**
      * Show user family tree.
      *
-     * @param  \App\User  $user
+     * @param  \App\Family  $user
      * @return \Illuminate\View\View
      */
-    public function tree(User $user)
-    {
+    public function tree(Family $user) {
         return view('users.tree', compact('user'));
     }
 
     /**
      * Show the form for editing the specified User.
      *
-     * @param  \App\User  $user
+     * @param  \App\Family  $user
      * @return \Illuminate\View\View
      */
-    public function edit(User $user)
-    {
+    public function edit(Family $user) {
         $this->authorize('edit', $user);
 
         $replacementUsers = [];
@@ -120,11 +115,10 @@ class UsersController extends Controller
      * Update the specified User in storage.
      *
      * @param  \App\Http\Requests\Users\UpdateRequest  $request
-     * @param  \App\User  $user
+     * @param  \App\Family  $user
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(UpdateRequest $request, User $user)
-    {
+    public function update(UpdateRequest $request, Family $user) {
         $user->update($request->validated());
 
         return redirect()->route('users.show', $user->id);
@@ -134,17 +128,16 @@ class UsersController extends Controller
      * Remove the specified User from storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\User  $user
+     * @param  \App\Family  $user
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(Request $request, User $user)
-    {
+    public function destroy(Request $request, Family $user) {
         $this->authorize('delete', $user);
 
         if ($request->has('replace_delete_button')) {
             $attributes = $request->validate([
                 'replacement_user_id' => 'required|exists:users,id',
-            ], [
+                    ], [
                 'replacement_user_id.required' => __('validation.user.replacement_user_id.required'),
             ]);
 
@@ -168,11 +161,10 @@ class UsersController extends Controller
      * Upload users photo.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\User  $user
+     * @param  \App\Family  $user
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function photoUpload(Request $request, User $user)
-    {
+    public function photoUpload(Request $request, Family $user) {
         $request->validate([
             'photo' => 'required|image|max:200',
         ]);
@@ -194,24 +186,22 @@ class UsersController extends Controller
      *
      * @return \Illuminate\Support\Collection
      */
-    private function getPersonList(int $genderId)
-    {
-        return User::where('gender_id', $genderId)->pluck('nickname', 'id');
+    private function getPersonList(int $genderId) {
+        return Family::where('gender_id', $genderId)->pluck('nickname', 'id');
     }
 
     /**
      * Get marriage list of a user.
      *
-     * @param \App\User $user
+     * @param \App\Family $user
      *
      * @return array
      */
-    private function getUserMariageList(User $user)
-    {
+    private function getUserMariageList(Family $user) {
         $usersMariageList = [];
 
         foreach ($user->couples as $spouse) {
-            $usersMariageList[$spouse->pivot->id] = $user->name.' & '.$spouse->name;
+            $usersMariageList[$spouse->pivot->id] = $user->name . ' & ' . $spouse->name;
         }
 
         return $usersMariageList;
@@ -222,14 +212,14 @@ class UsersController extends Controller
      *
      * @return array
      */
-    private function getAllMariageList()
-    {
+    private function getAllMariageList() {
         $allMariageList = [];
 
         foreach (Couple::with('husband', 'wife')->get() as $couple) {
-            $allMariageList[$couple->id] = $couple->husband->name.' & '.$couple->wife->name;
+            $allMariageList[$couple->id] = $couple->husband->name . ' & ' . $couple->wife->name;
         }
 
         return $allMariageList;
     }
+
 }

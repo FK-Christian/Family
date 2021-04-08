@@ -3,7 +3,7 @@
 namespace Tests\Unit;
 
 use App\Couple;
-use App\User;
+use App\Family;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -15,8 +15,8 @@ class CoupleTest extends TestCase
     public function a_couple_consists_of_a_husband_and_a_wife()
     {
         $couple = factory(Couple::class)->create();
-        $this->assertTrue($couple->husband instanceof User);
-        $this->assertTrue($couple->wife instanceof User);
+        $this->assertTrue($couple->husband instanceof Family);
+        $this->assertTrue($couple->wife instanceof Family);
     }
 
     /** @test */
@@ -35,7 +35,7 @@ class CoupleTest extends TestCase
         $couple = factory(Couple::class)->create();
         $this->assertCount(0, $couple->childs);
 
-        $child = factory(User::class)->create();
+        $child = factory(Family::class)->create();
         $couple->addChild($child);
 
         $child = $child->fresh();
@@ -49,6 +49,6 @@ class CoupleTest extends TestCase
     public function a_couple_have_a_manager()
     {
         $couple = factory(Couple::class)->create();
-        $this->assertTrue($couple->manager instanceof User);
+        $this->assertTrue($couple->manager instanceof Family);
     }
 }

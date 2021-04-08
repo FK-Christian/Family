@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
+use App\Models\Family;
 
-class UserMarriagesController extends Controller
-{
+class UserMarriagesController extends Controller {
+
     /**
      * Show user marriage list.
      *
-     * @param  \App\User  $user
+     * @param  \App\Family  $user
      * @return \Illuminate\View\View
      */
-    public function index(User $user)
-    {
+    public function index(Family $user) {
         $marriages = $user->marriages()->with('husband', 'wife')
-            ->withCount('childs')->get();
+                        ->withCount('childs')->get();
 
         return view('users.marriages', compact('user', 'marriages'));
     }
+
 }

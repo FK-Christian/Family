@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\User;
+use App\Family;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Storage;
 use Tests\TestCase;
@@ -14,8 +14,8 @@ class UsersProfileTest extends TestCase
     /** @test */
     public function guest_can_search_users_profile()
     {
-        $jono = factory(User::class)->create(['name' => 'Jono']);
-        $jeni = factory(User::class)->create(['name' => 'Jeni']);
+        $jono = factory(Family::class)->create(['name' => 'Jono']);
+        $jeni = factory(Family::class)->create(['name' => 'Jeni']);
         $johan = factory(user::class)->create(['name' => 'Johan']);
 
         $this->visitRoute('users.search', ['q' => 'jo']);
@@ -29,7 +29,7 @@ class UsersProfileTest extends TestCase
     /** @test */
     public function user_can_view_other_users_profile()
     {
-        $user = factory(User::class)->create();
+        $user = factory(Family::class)->create();
         $this->visit(route('users.show', $user->id));
         $this->see($user->name);
     }
@@ -171,7 +171,7 @@ class UsersProfileTest extends TestCase
     public function manager_can_add_login_account_on_a_user()
     {
         $manager = $this->loginAsUser();
-        $user = factory(User::class)->create(['manager_id' => $manager->id]);
+        $user = factory(Family::class)->create(['manager_id' => $manager->id]);
         $this->visit(route('users.edit', [$user->id, 'tab' => 'login_account']));
         $this->seePageIs(route('users.edit', [$user->id, 'tab' => 'login_account']));
 
@@ -189,7 +189,7 @@ class UsersProfileTest extends TestCase
     public function manager_can_add_user_email_without_a_password()
     {
         $manager = $this->loginAsUser();
-        $user = factory(User::class)->create(['manager_id' => $manager->id]);
+        $user = factory(Family::class)->create(['manager_id' => $manager->id]);
         $this->visit(route('users.edit', [$user->id, 'tab' => 'login_account']));
         $this->seePageIs(route('users.edit', [$user->id, 'tab' => 'login_account']));
 
@@ -207,7 +207,7 @@ class UsersProfileTest extends TestCase
     public function empty_password_does_not_replace_existing()
     {
         $manager = $this->loginAsUser();
-        $user = factory(User::class)->create([
+        $user = factory(Family::class)->create([
             'manager_id' => $manager->id,
             'password'   => 'some random string password',
         ]);

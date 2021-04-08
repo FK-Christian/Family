@@ -50,6 +50,15 @@ Route::get('couples/{couple}/edit', ['as' => 'couples.edit', 'uses' => 'CouplesC
 Route::patch('couples/{couple}', ['as' => 'couples.update', 'uses' => 'CouplesController@update']);
 
 /**
+ * FAmily Manage 
+ */
+Route::resource('family', 'FamilyController');
+Route::get('family', 'FamilyController@index')->name('family.index');
+Route::get('family-show/{id}', 'FamilyController@show')->name('family.show');
+Route::get('family-create', 'FamilyController@create')->name('family.create');
+Route::delete('family-destroy/{id}', 'FamilyController@destroy')->name('family.destroy');
+
+/**
  * Admin only routes
  */
 Route::group(['middleware' => 'admin'], function () {

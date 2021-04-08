@@ -4,15 +4,14 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCouplesTable extends Migration
-{
+class CreateCouplesTable extends Migration {
+
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
+    public function up() {
         Schema::create('couples', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('husband_id');
@@ -31,8 +30,8 @@ class CreateCouplesTable extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         Schema::dropIfExists('couples');
     }
+
 }

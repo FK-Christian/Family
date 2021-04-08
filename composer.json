@@ -13,12 +13,17 @@
     "require": {
         "php": "^7.3",
         "backup-manager/laravel": "dev-laravel_8_support",
+        "barryvdh/laravel-snappy": "^0.4.8",
+        "crocodicstudio/crudbooster": "5.5",
         "fideloper/proxy": "^4.0",
         "laravel/framework": "^8.0",
         "laravel/legacy-factories": "^1.0",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^3.0",
-        "luthfi/formfield": "^1.0"
+        "luthfi/formfield": "^1.0",
+        "wemersonjanuario/wkhtmltopdf-windows": "0.12.2.3",
+        "yajra/laravel-datatables": "^1.5",
+        "yajra/laravel-datatables-oracle": "^9.17"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.1",

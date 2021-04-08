@@ -3,7 +3,7 @@
 namespace Tests\Unit\Policies;
 
 use App\Couple;
-use App\User;
+use App\Family;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Str;
 use Tests\TestCase;
@@ -16,7 +16,7 @@ class CouplePolicyTest extends TestCase
     public function manager_can_edit_couples()
     {
         $otherCoupleManagerId = Str::random();
-        $manager = factory(User::class)->create();
+        $manager = factory(Family::class)->create();
         $couple = factory(Couple::class)->create(['manager_id' => $manager->id]);
         $otherCouple = factory(Couple::class)->create(['manager_id' => $otherCoupleManagerId]);
 
@@ -31,8 +31,8 @@ class CouplePolicyTest extends TestCase
         $otherCoupleManagerId = Str::random();
         config(['app.system_admin_emails' => $adminEmail]);
 
-        $manager = factory(User::class)->create();
-        $admin = factory(User::class)->create(['email' => $adminEmail]);
+        $manager = factory(Family::class)->create();
+        $admin = factory(Family::class)->create(['email' => $adminEmail]);
         $couple = factory(Couple::class)->create(['manager_id' => $manager->id]);
         $otherCouple = factory(Couple::class)->create(['manager_id' => $otherCoupleManagerId]);
 

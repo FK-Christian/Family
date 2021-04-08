@@ -3,7 +3,7 @@
 namespace App\Jobs\Users;
 
 use App\Couple;
-use App\User;
+use App\Family;
 use Illuminate\Support\Facades\DB;
 
 class DeleteAndReplaceUser
@@ -12,7 +12,7 @@ class DeleteAndReplaceUser
 
     public $replacementUserId;
 
-    public function __construct(User $user, string $replacementUserId)
+    public function __construct(Family $user, string $replacementUserId)
     {
         $this->user = $user;
         $this->replacementUserId = $replacementUserId;
@@ -46,8 +46,8 @@ class DeleteAndReplaceUser
 
     private function removeDuplicatedCouples(string $oldUserId, string $replacementUserId)
     {
-        $oldUser = User::find($oldUserId);
-        $replacementUser = User::find($replacementUserId);
+        $oldUser = Family::find($oldUserId);
+        $replacementUser = Family::find($replacementUserId);
 
         if ($replacementUser->gender_id == 1) {
             $replacementUserCouples = Couple::where('husband_id', $replacementUserId)->get();
