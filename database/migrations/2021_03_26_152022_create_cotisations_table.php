@@ -17,8 +17,8 @@ class CreateCotisationsTable extends Migration {
             $table->uuid('family');
             $table->string("name",200);
             $table->double("seuil")->default(0);
-            $table->timestamp('start_date');
-            $table->timestamp('end_date');
+            $table->timestamp('start_date')->default(\DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamp('end_date')->default(\DB::raw('CURRENT_TIMESTAMP'));
             $table->mediumText('description');
             $table->foreign('family')->references('id')->on('families');
         });

@@ -17,8 +17,8 @@ class CreateProjetsTable extends Migration {
             $table->uuid('propose_par');
             $table->string('name', 200);
             $table->unsignedInteger("cotisation");
-            $table->timestamp('start_date');
-            $table->timestamp('end_date');
+            $table->timestamp('start_date')->default(\DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamp('end_date')->default(\DB::raw('CURRENT_TIMESTAMP'));
             $table->enum("status", config('constants.ETAPE_PROJET'));
             $table->mediumText('description');
             $table->foreign('propose_par')->references('id')->on('families');

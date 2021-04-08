@@ -15,8 +15,8 @@ class CreateBureausTable extends Migration {
         Schema::create('bureaus', function (Blueprint $table) {
             $table->id();
             $table->uuid('family');
-            $table->timestamp('start_date');
-            $table->timestamp('end_date');
+            $table->timestamp('start_date')->default(\DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamp('end_date')->default(\DB::raw('CURRENT_TIMESTAMP'));
             $table->boolean('status')->default(true);
             $table->uuid('user');
             $table->enum("poste", config('constants.POSTE_LISTE'));

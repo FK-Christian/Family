@@ -16,7 +16,7 @@ class CreateReglementsTable extends Migration {
             $table->id();
             $table->uuid('family');
             $table->string('fichier', 500);
-            $table->timestamp('start_date');
+            $table->timestamp('start_date')->default(\DB::raw('CURRENT_TIMESTAMP'));
             $table->mediumText('description');
             $table->uuid('propose_par');
             $table->foreign('propose_par')->references('id')->on('families');
