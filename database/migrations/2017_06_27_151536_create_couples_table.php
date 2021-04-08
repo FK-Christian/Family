@@ -13,6 +13,7 @@ class CreateCouplesTable extends Migration {
      */
     public function up() {
         Schema::create('couples', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->uuid('id')->primary();
             $table->uuid('husband_id');
             $table->uuid('wife_id');

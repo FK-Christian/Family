@@ -13,6 +13,7 @@ class CreateBureausTable extends Migration {
      */
     public function up() {
         Schema::create('bureaus', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->id();
             $table->uuid('family');
             $table->timestamp('start_date')->default(\DB::raw('CURRENT_TIMESTAMP'));

@@ -14,6 +14,7 @@ class CreateFamiliesTable extends Migration
     public function up()
     {
         Schema::create('families', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->uuid('id')->primary();
             $table->string('nickname',100);
             $table->string('name',200)->nullable();

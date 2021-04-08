@@ -13,6 +13,7 @@ class CreateProjetsTable extends Migration {
      */
     public function up() {
         Schema::create('projets', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->id();
             $table->uuid('propose_par');
             $table->string('name', 200);

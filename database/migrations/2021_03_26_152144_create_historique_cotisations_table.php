@@ -13,6 +13,7 @@ class CreateHistoriqueCotisationsTable extends Migration {
      */
     public function up() {
         Schema::create('historique_cotisations', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->id();
             $table->unsignedInteger("cotisation");
             $table->boolean('status')->default(true);

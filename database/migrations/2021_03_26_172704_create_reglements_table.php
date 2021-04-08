@@ -13,6 +13,7 @@ class CreateReglementsTable extends Migration {
      */
     public function up() {
         Schema::create('reglements', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->id();
             $table->uuid('family');
             $table->string('fichier', 500);

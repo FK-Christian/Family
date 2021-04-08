@@ -13,6 +13,7 @@ class CreateCotisationsTable extends Migration {
      */
     public function up() {
         Schema::create('cotisations', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->increments('id');
             $table->uuid('family');
             $table->string("name",200);
