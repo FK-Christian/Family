@@ -14,7 +14,7 @@ class CreateSeancesTable extends Migration {
     public function up() {
         Schema::create('seances', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->id();
+            $table->increments('id');
             $table->uuid('family');
             $table->unsignedInteger("bureau");
             $table->timestamps();
